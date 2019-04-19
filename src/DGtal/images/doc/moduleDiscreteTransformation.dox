@@ -1,0 +1,42 @@
+/**
+ * @file
+ * @author Raphael Lenain (\c raphael.lenain@univ-poitiers.fr )
+* Laboratoire XLIM - Axe ASALI - Equipe IG, Poitiers, France
+ *
+ * @date 2019/04/16
+ *
+ * @brief Documentation file for discrete transformations in DGtal.
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleDiscreteTransform Discrete transformations
+@writers Raphael Lenain
+@date 2019/04/16
+
+[TOC]
+
+\section sectmoduleDiscreteTransform1 Overview
+
+This module gather classes which represent discrete transformations.
+
+\section subsecDiscrete2D transformations
+
+TO COMPLETE
+
+*/
+ }
+
+
+
+
+
+
+
