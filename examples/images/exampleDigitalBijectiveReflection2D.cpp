@@ -15,23 +15,23 @@
  **/
 
 /**
- * @file images/exampleReflection2D.cpp
+ * @file images/exampleDigitalBijectiveReflection2D.cpp
  * @ingroup Examples
  * @author Raphael Lenain (\c raphael.lenain@univ-poitiers.fr )
  * Laboratoire XLIM - Axe ASALI - Equipe IG, Poitiers, France
  *
  * @date 2019/04/16
  *
- * An example file named reflection2D.
+ * An example file named DigitalBijectiveReflection2D.
  *
  * This file is part of the DGtal library.
  */
 
 /**
 *  Example of 2D reflection.
-   @see @ref moduleDiscreteTransform
+   @see @ref moduleDigitalBijectiveTransformation
    \image html church_reflected.jpg "Result reflection" 
-*  \example images/exampleReflection2D.cpp
+*  \example images/exampleDigitalBijectiveReflection2D.cpp
 **/
 
 
@@ -47,7 +47,7 @@
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 //! [include]
-#include "DGtal/images/DiscreteTransformation2D.h"
+#include "DGtal/images/DigitalBijectiveTransformation.h"
 //! [include]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,7 @@ int main( int , char** )
     Point origin((image.domain().lowerBound()[0] + image.domain().upperBound()[0]) / 2,
       (image.domain().lowerBound()[1] + image.domain().upperBound()[1]) / 2);
     double angle = 0.0;
-    DGtal::functors::DiscreteReflection2D<DGtal::Z2i::Space> reflection(origin, angle);
+    DGtal::functors::DigitalBijectiveReflection2D<DGtal::Z2i::Space> reflection(origin, angle);
     
     for (Domain::ConstIterator iterator = outputDomain.begin(), iteratorEnd = outputDomain.end(); iteratorEnd != iterator; iterator++)
     {

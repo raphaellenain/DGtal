@@ -15,23 +15,23 @@
  **/
 
 /**
- * @file images/exampleRotation2D.cpp
+ * @file images/exampleDigitalBijectiveRotationByReflection2D.cpp
  * @ingroup Examples
  * @author Raphael Lenain (\c raphael.lenain@univ-poitiers.fr )
  * Laboratoire XLIM - Axe ASALI - Equipe IG, Poitiers, France
  *
  * @date 2019/04/16
  *
- * An example file named rotation2D.
+ * An example file named DigitalBijectiveRotationByReflection2D.
  *
  * This file is part of the DGtal library.
  */
 
 /**
 *  Example of 2D rotation.
-   @see @ref moduleDiscreteTransform
+   @see @ref moduleDigitalBijectiveTransformation
    \image html church_rotated.jpg "Result rotation" 
-*  \example images/exampleRotation2D.cpp
+*  \example images/exampleDigitalBijectiveRotationByReflection2D.cpp
 **/
 
 
@@ -47,7 +47,7 @@
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 //! [include]
-#include "DGtal/images/DiscreteTransformation2D.h"
+#include "DGtal/images/DigitalBijectiveTransformation.h"
 //! [include]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +77,7 @@ int main( int , char** )
       (image.domain().lowerBound()[1] + image.domain().upperBound()[1]) / 2);
     double angle = M_PI / 8;
     double parameter = 0.0;
-    DGtal::functors::DiscreteRotation2D<DGtal::Z2i::Space> rotation(origin, parameter, angle);
+    DGtal::functors::DigitalBijectiveRotationByReflection2D<DGtal::Z2i::Space> rotation(origin, parameter, angle);
     
     for (Domain::ConstIterator iterator = outputDomain.begin(), iteratorEnd = outputDomain.end(); iteratorEnd != iterator; iterator++)
     {

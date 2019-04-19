@@ -17,7 +17,7 @@
 #pragma once
 
 /**
-* @file DiscreteTransformation2D.h
+* @file DigitalBijectiveTransformation2D.h
 * @author Eric Andres (\c eric.andres@univ-poitiers.fr )
 * Laboratoire XLIM - Axe ASALI - Equipe IG, Poitiers, France
 *
@@ -26,15 +26,15 @@
 * This file is part of the DGtal library.
 */
 
-#if defined(DiscreteTransformation2D_RECURSES)
-#error Recursive header files inclusion detected in DiscreteTransformation2D.h
-#else // defined(DiscreteTransformation2D_RECURSES)
+#if defined(DigitalBijectiveTransformation2D_RECURSES)
+#error Recursive header files inclusion detected in DigitalBijectiveTransformation2D.h
+#else // defined(DigitalBijectiveTransformation2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DiscreteTransformation2D_RECURSES
+#define DigitalBijectiveTransformation2D_RECURSES
 
-#if !defined DiscreteTransformation2D_h
+#if !defined DigitalBijectiveTransformation2D_h
 /** Prevents repeated inclusion of headers. */
-#define DiscreteTransformation2D_h
+#define DigitalBijectiveTransformation2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,25 +48,22 @@
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/kernel/CSpace.h>
 //////////////////////////////////////////////////////////////////////////////
-#ifndef M_PI_4
-#define M_PI_4     0.785398163397448309616  // pi/4
-#endif
 namespace DGtal
 {
 	namespace functors
 	{
 		/////////////////////////////////////////////////////////////////////////////
-		// Template class DiscreteReflection2D
+		// Template class DigitalBijectiveReflection2D
 		/**
-		* Description of template functor like class 'DiscreteReflection2D' <p>
-		* \brief Aim: implements reflection of a point in the 2D integer space.
+		* Description of template functor like class 'DigitalBijectiveReflection2D' <p>
+		* \brief Aim: implements bijective reflection of a point in the 2D integer space.
 		*
 		* @tparam TSpace a 2 dimensional space.
 		*
-		* @see exampleReflection2D.cpp
+		* @see exampleDigitalBijectiveReflection2D.cpp
 		*/
 		template <typename TSpace>
-		class DiscreteReflection2D
+		class DigitalBijectiveReflection2D
 		{
 			///Checking concepts
 			BOOST_CONCEPT_ASSERT((concepts::CSpace<TSpace>));
@@ -84,22 +81,22 @@ namespace DGtal
 			* @param aOrigin  the center of reflection.
 			* @param anAngle  the angle given in radians.
 			*/
-			DiscreteReflection2D(const Point & aOrigin, const double & anAngle)
-				:origin(aOrigin), angle(DiscreteReflection2D::modulo2Pi(anAngle))
+			DigitalBijectiveReflection2D(const Point & aOrigin, const double & anAngle)
+				:origin(aOrigin), angle(DigitalBijectiveReflection2D::moduloPi(anAngle))
 			{
-				this->sinusAng = DiscreteReflection2D::sinus(angle);
-				this->cosinusAng = DiscreteReflection2D::cosinus(angle);
-				if (this->angle <= M_PI_4)
+				this->sinusAng = sinus(this->angle);
+				this->cosinusAng = cosinus(this->angle);
+				if (this->angle <= M_PI / 4 && this->angle >= -M_PI / 4)
 				{
 					this->orthogonalLinesDivider = this->cosinusAng;
-					this->computingFunction = &DiscreteReflection2D::computeX;
+					this->computingFunction = &DigitalBijectiveReflection2D::computeX;
 					this->indexRoundedCoordinate = 1;
 					this->indexComputedCoordinate = 0;
 				}
 				else
 				{
 					this->orthogonalLinesDivider = this->sinusAng;
-					this->computingFunction = &DiscreteReflection2D::computeY;
+					this->computingFunction = &DigitalBijectiveReflection2D::computeY;
 					this->indexRoundedCoordinate = 0;
 					this->indexComputedCoordinate = 1;
 				}
@@ -144,29 +141,51 @@ namespace DGtal
 
 			// ------------------------- Protected Methods ------------------------------
 		protected:
-			//=============================================================
-			//Compute the difference of a point
+
+			/**
+			* Compute the difference of a point
+			* @param point  the initial point.
+			* @return the difference.
+			*/
 			double computeDiffPoint(Point point) const
 			{
 				return this->sinusAng * (point[0] - this->origin[0]) - this->cosinusAng * (point[1] - this->origin[1]);
 			}
 
-			//=============================================================
-			//Compute X knowing Y
+			/**
+			* Compute X knowing Y
+			* @param y  the known Y value.
+			* @param orthogonalLinesIndex  the index of the orthogonal line.
+			* @param origin  the origin point for the transformation.
+			* @param cosinusAng  the cosinus of the angle.
+			* @param sinusAng  the sinus of the angle.
+			* @return the value of X.
+			*/
 			static double computeX(double y, double orthogonalLinesIndex, Point origin, double cosinusAng, double sinusAng)
 			{
 				return ceil(origin[0] + ((2.0 * orthogonalLinesIndex - 1.0) * cosinusAng - 2.0 * sinusAng * (y - origin[1])) / (2.0 * cosinusAng));
 			}
 
-			//=============================================================
-			//Compute Y knowing X
+			/**
+			* Compute Y knowing X
+			* @param x  the known X value.
+			* @param orthogonalLinesIndex  the index of the orthogonal line.
+			* @param origin  the origin point for the transformation.
+			* @param cosinusAng  the cosinus of the angle.
+			* @param sinusAng  the sinus of the angle.
+			* @return the value of Y.
+			*/
 			static double computeY(double x, double orthogonalLinesIndex, Point origin, double cosinusAng, double sinusAng)
 			{
 				return ceil(origin[1] + ((2.0 * orthogonalLinesIndex - 1.0) * sinusAng - 2.0 * cosinusAng * (x - origin[0])) / (2.0 * sinusAng));
 			}
 
-			//=============================================================
-			//Compute a point
+			/**
+			* Compute the coordinate of a point
+			* @param orthogonalLinesIndex  the index of the orthogonal line.
+			* @param roundFunction  the rounding function (ceil or floor).
+			* @return the calculated point.
+			*/
 			Point computePoint(double orthogonalLinesIndex, double(*roundFunction)(double)) const
 			{
 				Point retour;
@@ -176,28 +195,34 @@ namespace DGtal
 				return retour;
 			}
 
-			//=============================================================
-			//Compute angle % 2PI
-			static double modulo2Pi(double angle)
+			/**
+			* Compute the modulo PI of an angle
+			* @param angle  the initial angle value.
+			* @return the angle value in [-PI/2 ; PI/2[.
+			*/
+			static double moduloPi(double angle)
 			{
 				double out = angle;
-				double added = 2 * M_PI;
-				while (out < 0)
+				double added = M_PI;
+				while (out < -M_PI / 2)
 				{
-					// Adding 2 * PI
+					// Adding PI
 					out += added;
 				}
-				while (out >= added)
+				while (out >= M_PI / 2)
 				{
-					// Substracting 2 * PI
+					// Substracting PI
 					out -= added;
 				}
 				return out;
 			}
 
-			//=============================================================
-			//Compute cosinus(angle) with rounded values of M_PI suggested by the library
-			// angle has to be "moduloed" with 2PI
+			/**
+			* Compute the cosinus of an angle with rounded values of M_PI suggested by the library.
+			*  angle has to be "moduloed" with PI
+			* @param angle  the angle value.
+			* @return the cosinus of the angle
+			*/
 			static double cosinus(double angle)
 			{
 				double out = 0;
@@ -205,11 +230,11 @@ namespace DGtal
 				{
 					out = 1.0;
 				}
-				else if (angle == M_PI_2 || angle == 3 * M_PI_2)
+				else if (angle == M_PI / 2 || angle == 3 * M_PI / 2 || angle == -M_PI / 2)
 				{
 					out = 0.0;
 				}
-				else if (angle == M_PI)
+				else if (angle == M_PI || angle == -M_PI)
 				{
 					out = -1.0;
 				}
@@ -220,21 +245,24 @@ namespace DGtal
 				return out;
 			}
 
-			//=============================================================
-			//Compute sinus(angle) with rounded values of M_PI suggested by the library
-			// angle has to be "moduloed" with 2PI
+			/**
+			* Compute the sinus of an angle with rounded values of M_PI suggested by the library.
+			*  angle has to be "moduloed" with PI
+			* @param angle  the angle value.
+			* @return the sinus of the angle
+			*/
 			static double sinus(double angle)
 			{
 				double out = 0;
-				if (angle == 0 || angle == 2 * M_PI || angle == M_PI)
+				if (angle == 0 || angle == 2 * M_PI || angle == M_PI || angle == -M_PI)
 				{
 					out = 0.0;
 				}
-				else if (angle == M_PI_2)
+				else if (angle == M_PI / 2)
 				{
 					out = 1.0;
 				}
-				else if (angle == 3 * M_PI_2)
+				else if (angle == 3 * M_PI / 2 || angle == -M_PI / 2)
 				{
 					out = -1.0;
 				}
@@ -247,29 +275,29 @@ namespace DGtal
 
 			// ------------------------- Protected Datas ------------------------------
 		protected:
-			Point origin;
-			double sinusAng;
-			double cosinusAng;
-			double angle;
-			double orthogonalLinesDivider;
-			int indexRoundedCoordinate;
-			int indexComputedCoordinate;
-			double (*computingFunction)(double, double, Point, double, double);
+			Point origin; ///< Origin point for the transformation.
+			double sinusAng; ///< Sinus value of the angle.
+			double cosinusAng; ///< Cosinus value of the angle.
+			double angle; ///< The angle.
+			double orthogonalLinesDivider; ///< The orthogonal lines divider (sin or cos).
+			int indexRoundedCoordinate; ///< The index of the rounded coordinate (0 for X or 1 for Y).
+			int indexComputedCoordinate; ///< The index of the computed coordinate (0 for X or 1 for Y).
+			double(*computingFunction)(double, double, Point, double, double); ///< The computing function (computeX or computeY).
 		};
 
 
 		/////////////////////////////////////////////////////////////////////////////
-		// Template class DiscreteRotation2D
+		// Template class DigitalBijectiveRotationByReflection2D
 		/**
-		* Description of template functor like class 'DiscreteRotation2D' <p>
-		* \brief Aim: implements rotation of a point in the 2D integer space.
+		* Description of template functor like class 'DigitalBijectiveRotationByReflection2D' <p>
+		* \brief Aim: implements rotation of a point in the 2D integer space using 2 Digital Bijective Reflections.
 		*
 		* @tparam TSpace a 2 dimensional space.
 		*
-		* @see exampleRotation2D.cpp
+		* @see exampleDigitalBijectiveRotationByReflection2D.cpp
 		*/
 		template <typename TSpace>
-		class DiscreteRotation2D
+		class DigitalBijectiveRotationByReflection2D
 		{
 			///Checking concepts
 			BOOST_CONCEPT_ASSERT((concepts::CSpace<TSpace>));
@@ -287,16 +315,16 @@ namespace DGtal
 			* @param parametricAngle  the parametric angle given in radians.
 			* @param anAngle  the angle given in radians.
 			*/
-			DiscreteRotation2D(const Point & aOrigin, const double & parametricAngle, const double & anAngle)
+			DigitalBijectiveRotationByReflection2D(const Point & aOrigin, const double & parametricAngle, const double & anAngle)
 			{
-				this->firstReflection = new DiscreteReflection2D<TSpace>(aOrigin, parametricAngle);
-				this->secondReflection = new DiscreteReflection2D<TSpace>(aOrigin, parametricAngle + (anAngle / 2.0));
+				this->firstReflection = new DigitalBijectiveReflection2D<TSpace>(aOrigin, parametricAngle);
+				this->secondReflection = new DigitalBijectiveReflection2D<TSpace>(aOrigin, parametricAngle + (anAngle / 2.0));
 			}
 
 			/**
 			* Destructor.
 			*/
-			~DiscreteRotation2D()
+			~DigitalBijectiveRotationByReflection2D()
 			{
 				delete this->firstReflection;
 				delete this->secondReflection;
@@ -315,14 +343,15 @@ namespace DGtal
 
 			// ------------------------- Protected Datas ------------------------------
 		protected:
-			DiscreteReflection2D<TSpace> *firstReflection, *secondReflection;
+			DigitalBijectiveReflection2D<TSpace> *firstReflection; ///< Pointer to the first reflection operation.
+			DigitalBijectiveReflection2D<TSpace> *secondReflection; ///< Pointer to the second reflection operation.
 		};
 
 	}// namespace DGtal::functors
 }// namespace DGtal
 
-#endif // !defined DiscreteTransformation2D_h
+#endif // !defined DigitalBijectiveTransformation2D_h
 
-#undef DiscreteTransformation2D_RECURSES
-#endif // else defined(DiscreteTransformation2D_RECURSES)
+#undef DigitalBijectiveTransformation2D_RECURSES
+#endif // else defined(DigitalBijectiveTransformation2D_RECURSES)
 

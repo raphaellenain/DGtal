@@ -5,7 +5,7 @@
  *
  * @date 2019/04/16
  *
- * @brief Documentation file for discrete transformations in DGtal.
+ * @brief Documentation file for digital bijective transformations in DGtal.
  *
  * This file is part of the DGtal library.
  */
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDiscreteTransform Discrete transformations
+@page moduleDigitalBijectiveTransformation digital bijective transformations
 @writers Raphael Lenain
 @date 2019/04/16
 
@@ -25,7 +25,7 @@ namespace DGtal {
 
 \section sectmoduleDiscreteTransform1 Overview
 
-This module gather classes which represent discrete transformations.
+This module gather classes which represent digital bijective transformations.
 
 \section subsecDiscrete2D transformations
 
