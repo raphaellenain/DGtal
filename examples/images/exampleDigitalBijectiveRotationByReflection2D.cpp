@@ -47,7 +47,7 @@
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 //! [include]
-#include "DGtal/images/DigitalBijectiveTransformation.h"
+#include "DGtal/images/DigitalBijectiveTransformation2D.h"
 //! [include]
 ///////////////////////////////////////////////////////////////////////////////
 

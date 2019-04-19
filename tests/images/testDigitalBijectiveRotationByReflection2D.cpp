@@ -36,7 +36,7 @@
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/images/DigitalBijectiveTransformation.h"
+#include "DGtal/images/DigitalBijectiveTransformation2D.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 
