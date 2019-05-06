@@ -38,9 +38,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <cmath>
-#include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/ConstImageAdapter.h"
 #include "ConfigExamples.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
@@ -60,7 +58,6 @@ using namespace Z2i;
 
 int main( int , char** )
 {
-  typedef ImageSelector<Domain, unsigned char >::Type Image;
   //! [def]
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image;
   typedef Image::Domain Domain;

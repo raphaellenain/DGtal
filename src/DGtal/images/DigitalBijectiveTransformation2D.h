@@ -110,7 +110,7 @@ namespace DGtal
 			inline
 				Point operator()(const Point & point) const
 			{
-				Point ret;
+				Point out;
 				Point pt1, pt2;
 				//Computing the index of the orthogonal lines
 				double orthogonalLinesIndex = floor(0.5 + (this->cosinusAng * (point[0] - this->origin[0]) + this->sinusAng * (point[1] - this->origin[1])) / this->orthogonalLinesDivider);
@@ -121,22 +121,22 @@ namespace DGtal
 				if (-this->orthogonalLinesDivider / 2.0 <= diffPt1 && diffPt1 < this->orthogonalLinesDivider / 2.0)
 				{
 					// pt1 is the intersection point which exists in this case
-					ret[this->indexRoundedCoordinate] = 2.0 * pt1[this->indexRoundedCoordinate] - point[this->indexRoundedCoordinate];
+					out[this->indexRoundedCoordinate] = 2.0 * pt1[this->indexRoundedCoordinate] - point[this->indexRoundedCoordinate];
 				}
 				else if (-this->orthogonalLinesDivider / 2.0 <= diffPt2 && diffPt2 < this->orthogonalLinesDivider / 2.0)
 				{
 					// pt2 is the intersection point which exists in this case
-					ret[this->indexRoundedCoordinate] = 2.0 * pt2[this->indexRoundedCoordinate] - point[this->indexRoundedCoordinate];
+					out[this->indexRoundedCoordinate] = 2.0 * pt2[this->indexRoundedCoordinate] - point[this->indexRoundedCoordinate];
 				}
 				else
 				{
 					//there is no intersection point
-					ret[this->indexRoundedCoordinate] = (pt1[this->indexRoundedCoordinate] + pt2[this->indexRoundedCoordinate]) - point[this->indexRoundedCoordinate];
+					out[this->indexRoundedCoordinate] = (pt1[this->indexRoundedCoordinate] + pt2[this->indexRoundedCoordinate]) - point[this->indexRoundedCoordinate];
 				}
 
-				ret[this->indexComputedCoordinate] = this->computingFunction(ret[this->indexRoundedCoordinate], orthogonalLinesIndex, this->origin, this->cosinusAng, this->sinusAng);
+				out[this->indexComputedCoordinate] = this->computingFunction(out[this->indexRoundedCoordinate], orthogonalLinesIndex, this->origin, this->cosinusAng, this->sinusAng);
 
-				return ret;
+				return out;
 			}
 
 			// ------------------------- Protected Methods ------------------------------
@@ -188,11 +188,11 @@ namespace DGtal
 			*/
 			Point computePoint(double orthogonalLinesIndex, double(*roundFunction)(double)) const
 			{
-				Point retour;
-				retour[this->indexRoundedCoordinate] = roundFunction(this->sinusAng * this->cosinusAng * orthogonalLinesIndex + this->origin[this->indexRoundedCoordinate]);
-				retour[this->indexComputedCoordinate] = this->computingFunction(retour[this->indexRoundedCoordinate], orthogonalLinesIndex, this->origin, this->cosinusAng, this->sinusAng);
+				Point out;
+				out[this->indexRoundedCoordinate] = roundFunction(this->sinusAng * this->cosinusAng * orthogonalLinesIndex + this->origin[this->indexRoundedCoordinate]);
+				out[this->indexComputedCoordinate] = this->computingFunction(out[this->indexRoundedCoordinate], orthogonalLinesIndex, this->origin, this->cosinusAng, this->sinusAng);
 
-				return retour;
+				return out;
 			}
 
 			/**

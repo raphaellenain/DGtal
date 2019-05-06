@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testReflection2D.cpp
+ * @file testDigitalBijectiveReflection2D.cpp
  * @ingroup Tests
  * @author Raphael Lenain (\c raphael.lenain@univ-poitiers.fr )
  * Laboratoire XLIM - Axe ASALI - Equipe IG, Poitiers, France
